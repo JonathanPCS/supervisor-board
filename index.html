@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supervisor Assignment Board</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1f4e78 0%, #2d5fa3 100%);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        
+        .controls button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid #ddd;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .controls button:hover {
+            background: #f0f0f0;
+            border-color: #999;
+        }
+        
+        .controls button.active {
+            background: #1f4e78;
+            color: white;
+            border-color: #1f4e78;
+        }
+        
+        .add-job-btn {
+            background: #639922;
+            color: white;
+            border-color: #639922;
+            margin-left: auto;
+        }
+        
+        .add-job-btn:hover {
+            background: #527b1a;
+        }
+        
+        .board {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .supervisor-column {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .column-header {
+            background: #366092;
+            color: white;
+            padding: 1.5rem;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        
+        .jobs-container {
+            padding: 1rem;
+            min-height: 200px;
+        }
+        
+        .job-card {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #1f4e78;
+        }
+        
+        .job-card.urgent {
+            border-left-color: #e24b4a;
+            background: #fce4e4;
+        }
+        
+        .job-card.active {
+            border-left-color: #639922;
+            background: #eaf3de;
+        }
+        
+        .job-card.scheduled {
+            border-left-color: #185fa5;
+            background: #e6f1fb;
+        }
+        
+        .job-date {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+        }
+        
+        .job-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #1f4e78;
+            font-size: 1rem;
+        }
+        
+        .job-location {
+            font-size: 0.9rem;
+            color: #555;
+            margin-bottom: 0.75rem;
+        }
+        
+        .job-materials {
+            font-size: 0.85rem;
+            color: #666;
+            line-height: 1.4;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e0e0e0;
+            margin-top: 0.75rem;
+        }
+        
+        .job-status {
+            display: inline-block;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+            margin-top: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        
+        .status-urgent {
+            background: #e24b4a;
+            color: white;
+        }
+        
+        .status-active {
+            background: #639922;
+            color: white;
+        }
+        
+        .status-scheduled {
+            background: #185fa5;
+            color: white;
+        }
+        
+        .empty-state {
+            color: #999;
+            text-align: center;
+            padding: 2rem 1rem;
+            font-size: 0.95rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.active {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+        
+        .modal h2 {
+            margin-bottom: 1.5rem;
+            color: #1f4e78;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+        
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+        
+        .modal-buttons button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: all 0.2s;
+        }
+        
+        .btn-cancel {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+        
+        .btn-submit {
+            background: #639922;
+            color: white;
+        }
+        
+        .btn-submit:hover {
+            background: #527b1a;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>📋 Supervisor Assignment Board</h1>
+        <p>Real-time job assignments and materials tracking</p>
+    </div>
+    
+    <div class="container">
+        <div class="controls">
+            <button class="filter-btn active" onclick="filterSupervisor('all')">All Supervisors</button>
+            <button class="filter-btn" onclick="filterSupervisor('Miguel Hernandez')">Miguel</button>
+            <button class="filter-btn" onclick="filterSupervisor('James Chen')">James</button>
+            <button class="filter-btn" onclick="filterSupervisor('Marcus Williams')">Marcus</button>
+            <button class="add-job-btn" onclick="openAddJobModal()">+ Add Job Assignment</button>
+        </div>
+        
+        <div id="board" class="board">
+            <div class="loading">Loading assignments...</div>
+        </div>
+    </div>
+    
+    <div id="addJobModal" class="modal">
+        <div class="modal-content">
+            <h2>Add Job Assignment</h2>
+            <form id="jobForm">
+                <div class="form-group">
+                    <label>Supervisor</label>
+                    <select id="supervisor" required>
+                        <option value="">Select supervisor...</option>
+                        <option value="Miguel Hernandez">Miguel Hernandez</option>
+                        <option value="James Chen">James Chen</option>
+                        <option value="Marcus Williams">Marcus Williams</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="text" id="date" placeholder="e.g., Tomorrow (4/23), Wed 4/24" required>
+                </div>
+                <div class="form-group">
+                    <label>Job Name</label>
+                    <input type="text" id="jobName" placeholder="e.g., Riverdale Residential - Unit 4B" required>
+                </div>
+                <div class="form-group">
+                    <label>Location</label>
+                    <input type="text" id="location" placeholder="e.g., 123 Oak Street" required>
+                </div>
+                <div class="form-group">
+                    <label>Materials Needed</label>
+                    <textarea id="materials" placeholder="e.g., Joint compound (2), tape, sandpaper" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Status</label>
+                    <select id="status" required>
+                        <option value="Active">Active</option>
+                        <option value="Scheduled">Scheduled</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Notes (optional)</label>
+                    <input type="text" id="notes" placeholder="Any additional notes">
+                </div>
+                <div class="modal-buttons">
+                    <button type="button" class="btn-cancel" onclick="closeAddJobModal()">Cancel</button>
+                    <button type="submit" class="btn-submit">Add Assignment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
+    
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyBFqaA0ycFoaqdhUCvslP_8wPBw_QcwDfc",
+            authDomain: "pcs-supervisor-com.firebaseapp.com",
+            databaseURL: "https://pcs-supervisor-com-default-rtdb.firebaseio.com",
+            projectId: "pcs-supervisor-com",
+            storageBucket: "pcs-supervisor-com.firebasestorage.app",
+            messagingSenderId: "262410747315",
+            appId: "1:262410747315:web:ff497f4047e306adff9fc6",
+            measurementId: "G-QR6EJWL00N"
+        };
+        
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+        
+        let currentFilter = 'all';
+        let assignments = {};
+        
+        // Load assignments
+        function loadAssignments() {
+            db.ref('assignments').on('value', (snapshot) => {
+                assignments = snapshot.val() || {};
+                renderBoard();
+            });
+        }
+        
+        // Render the board
+        function renderBoard() {
+            const board = document.getElementById('board');
+            board.innerHTML = '';
+            
+            const supervisors = ['Miguel Hernandez', 'James Chen', 'Marcus Williams'];
+            
+            supervisors.forEach(supervisor => {
+                if (currentFilter !== 'all' && currentFilter !== supervisor) return;
+                
+                const column = document.createElement('div');
+                column.className = 'supervisor-column';
+                
+                const header = document.createElement('div');
+                header.className = 'column-header';
+                header.textContent = supervisor;
+                column.appendChild(header);
+                
+                const jobsContainer = document.createElement('div');
+                jobsContainer.className = 'jobs-container';
+                
+                const supervisorJobs = Object.values(assignments).filter(job => job.supervisor === supervisor);
+                
+                if (supervisorJobs.length === 0) {
+                    jobsContainer.innerHTML = '<div class="empty-state">No assignments yet</div>';
+                } else {
+                    supervisorJobs.forEach(job => {
+                        const card = document.createElement('div');
+                        card.className = `job-card ${job.status.toLowerCase()}`;
+                        
+                        card.innerHTML = `
+                            <div class="job-date">${job.date}</div>
+                            <div class="job-name">${job.jobName}</div>
+                            <div class="job-location">📍 ${job.location}</div>
+                            <div class="job-materials"><strong>Materials:</strong> ${job.materials}</div>
+                            <span class="job-status status-${job.status.toLowerCase()}">${job.status}</span>
+                        `;
+                        
+                        jobsContainer.appendChild(card);
+                    });
+                }
+                
+                column.appendChild(jobsContainer);
+                board.appendChild(column);
+            });
+        }
+        
+        // Filter functionality
+        function filterSupervisor(supervisor) {
+            currentFilter = supervisor;
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            renderBoard();
+        }
+        
+        // Modal functions
+        function openAddJobModal() {
+            document.getElementById('addJobModal').classList.add('active');
+        }
+        
+        function closeAddJobModal() {
+            document.getElementById('addJobModal').classList.remove('active');
+            document.getElementById('jobForm').reset();
+        }
+        
+        // Form submission
+        document.getElementById('jobForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const newJob = {
+                supervisor: document.getElementById('supervisor').value,
+                date: document.getElementById('date').value,
+                jobName: document.getElementById('jobName').value,
+                location: document.getElementById('location').value,
+                materials: document.getElementById('materials').value,
+                status: document.getElementById('status').value,
+                notes: document.getElementById('notes').value,
+                createdAt: new Date().toISOString()
+            };
+            
+            const newJobRef = db.ref('assignments').push();
+            newJobRef.set(newJob).then(() => {
+                closeAddJobModal();
+            }).catch(error => {
+                alert('Error adding assignment: ' + error.message);
+            });
+        });
+        
+        // Close modal when clicking outside
+        document.getElementById('addJobModal').addEventListener('click', (e) => {
+            if (e.target.id === 'addJobModal') {
+                closeAddJobModal();
+            }
+        });
+        
+        // Initialize
+        loadAssignments();
+    </script>
+</body>
+</html>
