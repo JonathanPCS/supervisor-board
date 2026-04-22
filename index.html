@@ -12,27 +12,28 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #f5f5f5;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #fafafa;
+            color: #222;
         }
         
         .header {
-            background: linear-gradient(135deg, #1f4e78 0%, #2d5fa3 100%);
+            background: #1f4e78;
             color: white;
             padding: 2rem;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         
         .header h1 {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+            margin-bottom: 0.25rem;
+            font-weight: 600;
         }
         
         .header p {
-            font-size: 0.95rem;
-            opacity: 0.9;
+            font-size: 0.9rem;
+            opacity: 0.85;
         }
         
         .container {
@@ -41,159 +42,234 @@
             padding: 0 1rem;
         }
         
-        .controls {
+        .toolbar {
             display: flex;
             gap: 1rem;
             margin-bottom: 2rem;
             flex-wrap: wrap;
             background: white;
-            padding: 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            padding: 1.25rem;
+            border-radius: 6px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
         
-        .controls button {
-            padding: 0.75rem 1.5rem;
+        .filter-group {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        
+        .filter-group label {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #666;
+            text-transform: uppercase;
+        }
+        
+        .toolbar button {
+            padding: 0.65rem 1.25rem;
             border: 1px solid #ddd;
             background: white;
-            border-radius: 6px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s;
+            color: #333;
+            font-weight: 500;
         }
         
-        .controls button:hover {
-            background: #f0f0f0;
+        .toolbar button:hover {
             border-color: #999;
+            background: #f9f9f9;
         }
         
-        .controls button.active {
+        .toolbar button.active {
             background: #1f4e78;
             color: white;
             border-color: #1f4e78;
         }
         
         .add-job-btn {
-            background: #639922;
+            background: #2d5fa3;
             color: white;
-            border-color: #639922;
+            border-color: #2d5fa3;
             margin-left: auto;
+            font-weight: 600;
         }
         
         .add-job-btn:hover {
-            background: #527b1a;
+            background: #1f4e78;
+            border-color: #1f4e78;
         }
         
         .board {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 1.5rem;
         }
         
         .supervisor-column {
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border-radius: 6px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
         
         .column-header {
-            background: #366092;
+            background: #2d5fa3;
             color: white;
-            padding: 1.5rem;
+            padding: 1.25rem;
             font-weight: 600;
-            font-size: 1.1rem;
+            font-size: 1rem;
+            border-bottom: 1px solid #1f4e78;
         }
         
         .jobs-container {
             padding: 1rem;
-            min-height: 200px;
+            flex: 1;
+            overflow-y: auto;
+            max-height: 700px;
         }
         
         .job-card {
-            background: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 6px;
+            background: #fafafa;
+            border: 1px solid #e5e5e5;
+            border-radius: 4px;
             padding: 1rem;
             margin-bottom: 1rem;
-            border-left: 4px solid #1f4e78;
+            border-left: 3px solid #2d5fa3;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+        
+        .job-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border-left-color: #1f4e78;
         }
         
         .job-card.urgent {
-            border-left-color: #e24b4a;
-            background: #fce4e4;
+            border-left-color: #c5192d;
+            background: #fff5f5;
+        }
+        
+        .job-card.urgent:hover {
+            border-left-color: #a01424;
         }
         
         .job-card.active {
-            border-left-color: #639922;
-            background: #eaf3de;
+            border-left-color: #2d7a3d;
+            background: #f5f9f7;
+        }
+        
+        .job-card.active:hover {
+            border-left-color: #1f5928;
         }
         
         .job-card.scheduled {
-            border-left-color: #185fa5;
-            background: #e6f1fb;
+            border-left-color: #5b7a99;
+            background: #f5f8fc;
+        }
+        
+        .job-card.scheduled:hover {
+            border-left-color: #2d5fa3;
+        }
+        
+        .job-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
         }
         
         .job-date {
-            font-size: 0.85rem;
-            color: #666;
+            font-size: 0.75rem;
+            color: #888;
             font-weight: 600;
-            margin-bottom: 0.5rem;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .job-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .job-action-btn {
+            background: transparent;
+            border: none;
+            color: #999;
+            cursor: pointer;
+            font-size: 0.85rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            transition: all 0.2s;
+        }
+        
+        .job-action-btn:hover {
+            color: #333;
+            background: rgba(0,0,0,0.05);
+        }
+        
+        .job-action-btn.delete:hover {
+            color: #c5192d;
         }
         
         .job-name {
             font-weight: 600;
             margin-bottom: 0.5rem;
-            color: #1f4e78;
-            font-size: 1rem;
+            color: #222;
+            font-size: 0.95rem;
+            line-height: 1.3;
         }
         
         .job-location {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #555;
             margin-bottom: 0.75rem;
         }
         
         .job-materials {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #666;
             line-height: 1.4;
             padding-top: 0.75rem;
-            border-top: 1px solid #e0e0e0;
+            border-top: 1px solid #e5e5e5;
             margin-top: 0.75rem;
         }
         
         .job-status {
             display: inline-block;
-            font-size: 0.75rem;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
+            font-size: 0.7rem;
+            padding: 0.3rem 0.6rem;
+            border-radius: 3px;
             margin-top: 0.75rem;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         
         .status-urgent {
-            background: #e24b4a;
-            color: white;
+            background: #ffe5e5;
+            color: #a01424;
         }
         
         .status-active {
-            background: #639922;
-            color: white;
+            background: #e5f5eb;
+            color: #1f5928;
         }
         
         .status-scheduled {
-            background: #185fa5;
-            color: white;
+            background: #e8f0f8;
+            color: #2d5fa3;
         }
         
         .empty-state {
             color: #999;
             text-align: center;
             padding: 2rem 1rem;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
         
         .modal {
@@ -203,7 +279,7 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.4);
             z-index: 1000;
             align-items: center;
             justify-content: center;
@@ -215,16 +291,19 @@
         
         .modal-content {
             background: white;
-            border-radius: 8px;
+            border-radius: 6px;
             padding: 2rem;
             max-width: 500px;
             width: 90%;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         .modal h2 {
             margin-bottom: 1.5rem;
-            color: #1f4e78;
+            color: #222;
+            font-size: 1.3rem;
         }
         
         .form-group {
@@ -234,8 +313,9 @@
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
-            font-weight: 600;
+            font-weight: 500;
             color: #333;
+            font-size: 0.9rem;
         }
         
         .form-group input,
@@ -245,8 +325,16 @@
             padding: 0.75rem;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-family: inherit;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #2d5fa3;
+            box-shadow: 0 0 0 2px rgba(45, 95, 163, 0.1);
         }
         
         .form-group textarea {
@@ -258,55 +346,93 @@
             display: flex;
             gap: 1rem;
             justify-content: flex-end;
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #e5e5e5;
         }
         
         .modal-buttons button {
             padding: 0.75rem 1.5rem;
-            border: none;
+            border: 1px solid #ddd;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             transition: all 0.2s;
+            font-weight: 500;
         }
         
         .btn-cancel {
-            background: #f0f0f0;
+            background: white;
             color: #333;
         }
         
         .btn-cancel:hover {
-            background: #e0e0e0;
+            background: #f5f5f5;
         }
         
         .btn-submit {
-            background: #639922;
+            background: #2d5fa3;
             color: white;
+            border-color: #2d5fa3;
         }
         
         .btn-submit:hover {
-            background: #527b1a;
+            background: #1f4e78;
         }
         
         .loading {
             text-align: center;
             padding: 2rem;
-            color: #666;
+            color: #888;
+        }
+        
+        .detail-modal .modal-content {
+            max-width: 600px;
+        }
+        
+        .detail-field {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        
+        .detail-field:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        
+        .detail-label {
+            font-size: 0.8rem;
+            color: #888;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+        }
+        
+        .detail-value {
+            font-size: 0.95rem;
+            color: #333;
+            line-height: 1.5;
         }
     </style>
 </head>
 <body>
     <div class="header">
-        <h1>📋 Supervisor Assignment Board</h1>
+        <h1>Supervisor Assignment Board</h1>
         <p>Real-time job assignments and materials tracking</p>
     </div>
     
     <div class="container">
-        <div class="controls">
-            <button class="filter-btn active" onclick="filterSupervisor('all')">All Supervisors</button>
-            <button class="filter-btn" onclick="filterSupervisor('Miguel Hernandez')">Miguel</button>
-            <button class="filter-btn" onclick="filterSupervisor('James Chen')">James</button>
-            <button class="filter-btn" onclick="filterSupervisor('Marcus Williams')">Marcus</button>
-            <button class="add-job-btn" onclick="openAddJobModal()">+ Add Job Assignment</button>
+        <div class="toolbar">
+            <div class="filter-group">
+                <label>View:</label>
+                <button class="filter-btn active" onclick="filterSupervisor('all')">All</button>
+                <button class="filter-btn" onclick="filterSupervisor('Miguel Hernandez')">Miguel</button>
+                <button class="filter-btn" onclick="filterSupervisor('James Chen')">James</button>
+                <button class="filter-btn" onclick="filterSupervisor('Marcus Williams')">Marcus</button>
+            </div>
+            <button class="add-job-btn" onclick="openAddJobModal()">Add Assignment</button>
         </div>
         
         <div id="board" class="board">
@@ -363,9 +489,20 @@
         </div>
     </div>
     
+    <div id="detailModal" class="modal detail-modal">
+        <div class="modal-content">
+            <h2 id="detailTitle">Job Details</h2>
+            <div id="detailContent"></div>
+            <div class="modal-buttons">
+                <button class="btn-cancel" onclick="closeDetailModal()">Close</button>
+                <button class="btn-submit" onclick="deleteCurrentJob()" style="background: #c5192d; border-color: #c5192d;">Delete</button>
+            </div>
+        </div>
+    </div>
+    
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
-        import { getDatabase, ref, onValue, push, set } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js';
+        import { getDatabase, ref, onValue, push, set, remove } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js';
         
         const firebaseConfig = {
             apiKey: "AIzaSyBFqaA0ycFoaqdhUCvslP_8wPBw_QcwDfc",
@@ -383,6 +520,7 @@
         
         let currentFilter = 'all';
         let assignments = {};
+        let currentJobKey = null;
         
         function loadAssignments() {
             onValue(ref(db, 'assignments'), (snapshot) => {
@@ -411,19 +549,27 @@
                 const jobsContainer = document.createElement('div');
                 jobsContainer.className = 'jobs-container';
                 
-                const supervisorJobs = Object.values(assignments).filter(job => job.supervisor === supervisor);
+                const supervisorJobs = Object.entries(assignments)
+                    .filter(([_, job]) => job.supervisor === supervisor)
+                    .reverse();
                 
                 if (supervisorJobs.length === 0) {
-                    jobsContainer.innerHTML = '<div class="empty-state">No assignments yet</div>';
+                    jobsContainer.innerHTML = '<div class="empty-state">No assignments</div>';
                 } else {
-                    supervisorJobs.forEach(job => {
+                    supervisorJobs.forEach(([jobKey, job]) => {
                         const card = document.createElement('div');
                         card.className = `job-card ${job.status.toLowerCase()}`;
                         
                         card.innerHTML = `
-                            <div class="job-date">${job.date}</div>
+                            <div class="job-header">
+                                <div class="job-date">${job.date}</div>
+                                <div class="job-actions">
+                                    <button class="job-action-btn" onclick="viewJobDetails('${jobKey}', event)">View</button>
+                                    <button class="job-action-btn delete" onclick="deleteJob('${jobKey}', event)">Delete</button>
+                                </div>
+                            </div>
                             <div class="job-name">${job.jobName}</div>
-                            <div class="job-location">📍 ${job.location}</div>
+                            <div class="job-location">${job.location}</div>
                             <div class="job-materials"><strong>Materials:</strong> ${job.materials}</div>
                             <span class="job-status status-${job.status.toLowerCase()}">${job.status}</span>
                         `;
@@ -453,6 +599,66 @@
             document.getElementById('jobForm').reset();
         };
         
+        window.viewJobDetails = function(jobKey, event) {
+            event.stopPropagation();
+            const job = assignments[jobKey];
+            currentJobKey = jobKey;
+            
+            document.getElementById('detailTitle').textContent = job.jobName;
+            document.getElementById('detailContent').innerHTML = `
+                <div class="detail-field">
+                    <div class="detail-label">Supervisor</div>
+                    <div class="detail-value">${job.supervisor}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-label">Date</div>
+                    <div class="detail-value">${job.date}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-label">Location</div>
+                    <div class="detail-value">${job.location}</div>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-label">Status</div>
+                    <div class="detail-value">
+                        <span class="job-status status-${job.status.toLowerCase()}">${job.status}</span>
+                    </div>
+                </div>
+                <div class="detail-field">
+                    <div class="detail-label">Materials</div>
+                    <div class="detail-value">${job.materials}</div>
+                </div>
+                ${job.notes ? `
+                <div class="detail-field">
+                    <div class="detail-label">Notes</div>
+                    <div class="detail-value">${job.notes}</div>
+                </div>
+                ` : ''}
+            `;
+            
+            document.getElementById('detailModal').classList.add('active');
+        };
+        
+        window.closeDetailModal = function() {
+            document.getElementById('detailModal').classList.remove('active');
+            currentJobKey = null;
+        };
+        
+        window.deleteJob = function(jobKey, event) {
+            event.stopPropagation();
+            if (confirm('Are you sure you want to delete this assignment?')) {
+                remove(ref(db, `assignments/${jobKey}`));
+            }
+        };
+        
+        window.deleteCurrentJob = function() {
+            if (currentJobKey && confirm('Are you sure you want to delete this assignment?')) {
+                remove(ref(db, `assignments/${currentJobKey}`)).then(() => {
+                    window.closeDetailModal();
+                });
+            }
+        };
+        
         document.getElementById('jobForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -477,6 +683,12 @@
         document.getElementById('addJobModal').addEventListener('click', (e) => {
             if (e.target.id === 'addJobModal') {
                 window.closeAddJobModal();
+            }
+        });
+        
+        document.getElementById('detailModal').addEventListener('click', (e) => {
+            if (e.target.id === 'detailModal') {
+                window.closeDetailModal();
             }
         });
         
