@@ -363,10 +363,10 @@
         </div>
     </div>
     
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js"></script>
-    
-    <script>
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+        import { getDatabase, ref, onValue, push, set } from 'https://www.gstatic.com/firebasejs/10.7.0/firebase-database.js';
+        
         const firebaseConfig = {
             apiKey: "AIzaSyBFqaA0ycFoaqdhUCvslP_8wPBw_QcwDfc",
             authDomain: "pcs-supervisor-com.firebaseapp.com",
@@ -378,21 +378,19 @@
             measurementId: "G-QR6EJWL00N"
         };
         
-        firebase.initializeApp(firebaseConfig);
-        const db = firebase.database();
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
         
         let currentFilter = 'all';
         let assignments = {};
         
-        // Load assignments
         function loadAssignments() {
-            db.ref('assignments').on('value', (snapshot) => {
+            onValue(ref(db, 'assignments'), (snapshot) => {
                 assignments = snapshot.val() || {};
                 renderBoard();
             });
         }
         
-        // Render the board
         function renderBoard() {
             const board = document.getElementById('board');
             board.innerHTML = '';
@@ -439,25 +437,22 @@
             });
         }
         
-        // Filter functionality
-        function filterSupervisor(supervisor) {
+        window.filterSupervisor = function(supervisor) {
             currentFilter = supervisor;
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');
             renderBoard();
-        }
+        };
         
-        // Modal functions
-        function openAddJobModal() {
+        window.openAddJobModal = function() {
             document.getElementById('addJobModal').classList.add('active');
-        }
+        };
         
-        function closeAddJobModal() {
+        window.closeAddJobModal = function() {
             document.getElementById('addJobModal').classList.remove('active');
             document.getElementById('jobForm').reset();
-        }
+        };
         
-        // Form submission
         document.getElementById('jobForm').addEventListener('submit', (e) => {
             e.preventDefault();
             
@@ -472,22 +467,19 @@
                 createdAt: new Date().toISOString()
             };
             
-            const newJobRef = db.ref('assignments').push();
-            newJobRef.set(newJob).then(() => {
-                closeAddJobModal();
+            push(ref(db, 'assignments'), newJob).then(() => {
+                window.closeAddJobModal();
             }).catch(error => {
                 alert('Error adding assignment: ' + error.message);
             });
         });
         
-        // Close modal when clicking outside
         document.getElementById('addJobModal').addEventListener('click', (e) => {
             if (e.target.id === 'addJobModal') {
-                closeAddJobModal();
+                window.closeAddJobModal();
             }
         });
         
-        // Initialize
         loadAssignments();
     </script>
 </body>
